@@ -14,7 +14,7 @@ int fila = 1;
 byte mono0[8] = { B00000, B01010, B11111, B01110, B10100, B00100, B01010, B00000 };
 byte mono1[8] = { B00000, B01010, B11111, B01110, B00101, B00100, B01010, B00000 };
 
-// --- FUNCIONES DE APOYO (Definidas antes para evitar errores) ---
+// las funciones definidias, asi no tenemos super epikos errores
 
 void actualizarPantalla(String msg) {
   lcd.clear();
@@ -30,11 +30,11 @@ void dibujarCuerpo(int frame) {
 }
 
 void saltar() {
-  fila = 0; // Sube a la fila de arriba
+  fila = 0; // Sube 
   actualizarPantalla("AAAAAA");
   delay(1000); 
   
-  fila = 1; // Baja a la fila de abajo
+  fila = 1; // Baja a la fila de abajo, ps nimod que a la de arriba broski
   actualizarPantalla("auch");
 }
 
@@ -46,7 +46,7 @@ void saludar() {
   }
 }
 
-// --- CONFIGURACIÓN PRINCIPAL ---
+// aqui va lo principal
 
 void setup() {
   pinMode(btnSaluda, INPUT_PULLUP);
@@ -60,14 +60,14 @@ void setup() {
   
   actualizarPantalla("monito pro");
 }
-
+//los botones 
 void loop() {
-  // Botón Saludar
+  // Botón para Saludar
   if (digitalRead(btnSaluda) == LOW) {
     saludar();
   }
 
-  // Botón Derecha
+  // Corre a la derecha
   if (digitalRead(btnDerecha) == LOW) {
     if (columna < 15) {
       columna++;
@@ -76,7 +76,7 @@ void loop() {
     }
   }
 
-  // Botón Izquierda
+  // Corre a la izquierda
   if (digitalRead(btnIzquierda) == LOW) {
     if (columna > 0) {
       columna--;
@@ -85,7 +85,7 @@ void loop() {
     }
   }
 
-  // Botón Salto
+  // Salta así como inmigrante a la frontera
   if (digitalRead(btnSalto) == LOW) {
     saltar();
   }
