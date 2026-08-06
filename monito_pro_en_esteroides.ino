@@ -9,12 +9,13 @@ int cactusCol = 15, aveCol = 25;
 int puntos = 0;
 bool juegoVivo = true, escenaFinal = false;
 
-// Caracteres
+// Definicion de cada personaje que sale
 byte mono0[8] = { B00000, B01010, B11111, B01110, B10100, B00100, B01010, B00000 };
 byte mono1[8] = { B00000, B01010, B11111, B01110, B00101, B00100, B01010, B00000 };
 byte cactus[8] = { B00100, B00101, B10101, B10101, B10110, B00100, B00100, B00100 };
 byte ave[8] = { B00000, B00100, B10101, B01110, B10101, B00100, B00000, B00000 };
 
+//definicion de los botones
 void setup() {
   pinMode(btnSaluda, INPUT_PULLUP);
   pinMode(btnIzquierda, INPUT_PULLUP);
@@ -27,7 +28,7 @@ void setup() {
   lcd.createChar(2, cactus);
   lcd.createChar(3, ave);
   
-  lcd.print("¡DALE VRO!");
+  lcd.print("ANIMO VROSKI");
   delay(1000);
 }
 
@@ -37,18 +38,19 @@ void loop() {
     lcd.setCursor(0, 0);
     lcd.print("sc:"); lcd.print(puntos);
     
-    // Dibujar personajes
+    // para que aparezcan los personajes
     lcd.setCursor(columna, fila); lcd.write(byte(0)); 
     if (cactusCol < 16) { lcd.setCursor(cactusCol, 1); lcd.write(byte(2)); }
     if (aveCol < 16) { lcd.setCursor(aveCol, 0); lcd.write(byte(3)); }
 
-    // --- MOVIMIENTO CON REGLA DE SEPARACIÓN (Mínimo 2 cuadros) ---
+    // esto es para que no se genere un frame sin minimo 2 de separacion, así no te puedes morir por culpa del juego
+    //si te mueres ahí pedo tuyo
     static unsigned long tJuego = 0;
-    if (millis() - tJuego > 120) { // Velocidad rápida
+    if (millis() - tJuego > 120) { // Velocidad 
       cactusCol--;
       aveCol--;
 
-      // Reset Cactus: Checa que el ave no esté cerca (columnas 13-15)
+      // Para que no te salga un catus y una ave en el mismo lugar 
       if (cactusCol < 0) {
         if (aveCol < 13) { 
           cactusCol = 15;
@@ -56,7 +58,7 @@ void loop() {
         } else { cactusCol = 17; } // Espera turno
       }
 
-      // Reset Ave: Checa que el cactus no esté cerca
+      // lo mismo de arriba
       if (aveCol < 0) {
         if (cactusCol < 13) {
           aveCol = 15;
@@ -99,12 +101,12 @@ void animacionVictoria() {
   lcd.setCursor(0, 0);
   lcd.print("LA MERA CHISPA"); 
   
-  // Fila 1: Texto y Monitos (Separados para no tocarse)
+  // Fila 1: Texto y Monitos (Separados para no tocarse porke si no muerte)
   lcd.setCursor(0, 1);
   lcd.print("DEL BOILER"); 
   
   // Ponemos a los monitos al final de la fila 1 (posiciones 14 y 15)
-  // Así están en la misma fila que "DEL CALDO" pero sin encimarse
+  // Así están en la misma fila que pero sin encimarse
   int p1 = 14; 
   int p2 = 15;
   
@@ -127,7 +129,7 @@ void animacionVictoria() {
   while(digitalRead(btnSaluda) == HIGH); 
   reiniciar();
 }
-
+//aqui ya es si te moriste por nuv
 void reiniciar() {
   juegoVivo = true; escenaFinal = false; puntos = 0;
   cactusCol = 15; aveCol = 25; columna = 2; fila = 1;
